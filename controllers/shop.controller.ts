@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import Shop from '../models/shop.model';
 import AppError from '../utils/appError';
 import catchErrorAsync from '../utils/catchErrorAsync';
+import { ShopInterface } from '../interfaces/shop';
 
 export const getAllShops: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const allShops: any = Shop.find();
+    const allShops: ShopInterface[] = await Shop.find();
 
     res.status(200).json({
       status: 'success',
@@ -31,7 +32,7 @@ export const createShop: any = catchErrorAsync(
 
 export const getShop: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const shop = await Shop.findById(req.params.id);
+    const shop: ShopInterface | null = await Shop.findById(req.params.id);
 
     if (!shop) {
       return next(new AppError('No Shop found with that ID', 404));

@@ -41,15 +41,6 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
 // globalErrorHandler must be at undermost. - LAST MIDDLEWARE
 app.use(globalErrorHandler);
 
-// const DB = process.env.DATABASE.replace(
-// 	'<PASSWORD>',
-// 	process.env.DATABASE_PASSWORD
-// );
-
-// mongoose
-// 	?.connect(DB)
-// 	.then(() => console.log('DB connection successful!'));
-
 const port = process.env.PORT || 5000;
 const server = app.listen(port, () => {
   connect();

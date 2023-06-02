@@ -22,8 +22,8 @@ exports.getAllShops = (0, catchErrorAsync_1.default)((req, res, next) => __await
         status: 'success',
         result: allShops.length,
         data: {
-            shops: allShops
-        }
+            shops: allShops,
+        },
     });
 }));
 exports.createShop = (0, catchErrorAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -31,8 +31,8 @@ exports.createShop = (0, catchErrorAsync_1.default)((req, res, next) => __awaite
     res.status(201).json({
         status: 'success',
         data: {
-            shop: newShop
-        }
+            shop: newShop,
+        },
     });
 }));
 exports.getShop = (0, catchErrorAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -43,14 +43,14 @@ exports.getShop = (0, catchErrorAsync_1.default)((req, res, next) => __awaiter(v
     res.status(200).json({
         status: 'success',
         data: {
-            shop: shop
-        }
+            shop: shop,
+        },
     });
 }));
 exports.updateShop = (0, catchErrorAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const shop = yield shop_model_1.default.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
-        runValidators: true
+        runValidators: true,
     });
     if (!shop) {
         return next(new appError_1.default('No Shop found with that ID', 404));
@@ -58,8 +58,8 @@ exports.updateShop = (0, catchErrorAsync_1.default)((req, res, next) => __awaite
     res.status(200).json({
         status: 'success',
         data: {
-            shop
-        }
+            shop,
+        },
     });
 }));
 exports.deleteShop = (0, catchErrorAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -69,6 +69,6 @@ exports.deleteShop = (0, catchErrorAsync_1.default)((req, res, next) => __awaite
     }
     res.status(204).json({
         status: 'success',
-        data: null
+        data: null,
     });
 }));

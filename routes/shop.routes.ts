@@ -1,6 +1,6 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-import * as shopController from "../controllers/shop.controller";
+import * as shopController from '../controllers/shop.controller';
 
 const router = Router();
 
@@ -14,6 +14,5 @@ router
   .get(shopController.getShop)
   .patch(shopController.updateShop)
   .delete(shopController.deleteShop);
-
 
 export default router;

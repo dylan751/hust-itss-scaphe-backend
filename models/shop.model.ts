@@ -1,5 +1,4 @@
-
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const shopSchema = new mongoose.Schema(
   {
@@ -15,50 +14,51 @@ const shopSchema = new mongoose.Schema(
       required: [true, 'A shop must have a status'],
       enum: {
         values: [0, 1, 2],
-        message: 'Status is either: 0(blocked), 1(in process), 2(blocked)'
-      }
+        message: 'Status is either: 0(blocked), 1(in process), 2(blocked)',
+      },
     },
     phone: {
       type: String,
-      required: [true, 'A shop must have a phone number']
+      required: [true, 'A shop must have a phone number'],
     },
     city: {
       type: String,
-      required: [true, 'A shop must have a city']
+      required: [true, 'A shop must have a city'],
     },
     district: {
       type: String,
-      required: [true, 'A shop must have a district']
+      required: [true, 'A shop must have a district'],
     },
     email: {
       type: String,
       required: [true, 'Please provide your email !'],
       unique: true,
       // validate: [isEmail, 'Please provide a valid email !'],
-      lowercase: true
+      lowercase: true,
     },
     password: {
       type: String,
       required: [true, 'Please provide a password !'],
       minlength: 4,
-      select: false
+      select: false,
     },
     avatar: {
       type: String,
-      required: [true, 'A shop must have a avatar']
+      required: [true, 'A shop must have a avatar'],
     },
     traffic: {
       type: Number,
       enum: {
         values: [0, 1, 2, 3, 4, 5],
-        message: 'Traffic is either: 0(few), 1(moderate), 2(a bit crowded), 3(crowded), 4(out of seats), 5(closed)'
-      }
+        message:
+          'Traffic is either: 0(few), 1(moderate), 2(a bit crowded), 3(crowded), 4(out of seats), 5(closed)',
+      },
     },
   },
   {
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-  }
+    toObject: { virtuals: true },
+  },
 );
 
 const shop = mongoose.model('Shop', shopSchema);

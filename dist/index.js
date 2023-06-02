@@ -10,7 +10,6 @@ const appError_1 = __importDefault(require("./utils/appError"));
 const shop_routes_1 = __importDefault(require("./routes/shop.routes"));
 const error_controller_1 = __importDefault(require("./controllers/error.controller"));
 dotenv_1.default.config();
-const port = process.env.PORT;
 process.on('uncaughtException', (err) => {
     console.error('UNHANDLER EXCEPTION! 💥 Shutting down...');
     console.error(`${err.name}: ${err.message}`);
@@ -33,13 +32,13 @@ app.use(error_controller_1.default);
 // mongoose
 // 	?.connect(DB)
 // 	.then(() => console.log('DB connection successful!'));
-const post = process.env.PORT || 5000;
-const server = app.listen(post, () => {
-    console.log(`App running on port ${post}...`);
+const port = process.env.PORT || 5000;
+const server = app.listen(port, () => {
+    console.log(`App running on port ${port}...`);
 });
 // -- Globally handle promise rejection --
-// Each time there is an unhandled rejection somewhere in our app, 
-// the process object will emit an object called unhandled rejection, 
+// Each time there is an unhandled rejection somewhere in our app,
+// the process object will emit an object called unhandled rejection,
 // and then we can subscribe to that event
 process.on('unhandledRejection', (err) => {
     console.error('UNHANDLER REJECTION! 💥 Shutting down...');

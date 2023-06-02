@@ -9,14 +9,6 @@ const shopSchema = new mongoose.Schema(
       maxlength: [40, 'A shop name must have less or equal 40 than characters'],
       minlength: [5, 'A shop name must have more or equal 5 than characters'],
     },
-    status: {
-      type: Number,
-      required: [true, 'A shop must have a status'],
-      enum: {
-        values: [0, 1, 2],
-        message: 'Status is either: 0(blocked), 1(in process), 2(blocked)',
-      },
-    },
     phone: {
       type: String,
       required: [true, 'A shop must have a phone number'],
@@ -58,6 +50,7 @@ const shopSchema = new mongoose.Schema(
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    timestamps: true,
   },
 );
 

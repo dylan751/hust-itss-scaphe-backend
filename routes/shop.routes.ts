@@ -4,10 +4,7 @@ import * as shopController from '../controllers/shop.controller';
 
 const router = Router();
 
-router
-  .route('/')
-  .get(shopController.getAllShops)
-  .post(shopController.createShop);
+router.route('/').get(shopController.getShops).post(shopController.createShop);
 
 router
   .route('/:id')

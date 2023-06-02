@@ -4,15 +4,19 @@ import AppError from '../utils/appError';
 import catchErrorAsync from '../utils/catchErrorAsync';
 import { ShopInterface } from '../interfaces/shop';
 
-export const getAllShops: any = catchErrorAsync(
+export const getShops: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const allShops: ShopInterface[] = await Shop.find();
+    const shops: ShopInterface[] = await Shop.find();
+
+    // TODO: Filter by city + district
+
+    // TODO: Filter by rating
 
     res.status(200).json({
       status: 'success',
-      result: allShops.length,
+      result: shops.length,
       data: {
-        shops: allShops,
+        shops: shops,
       },
     });
   },

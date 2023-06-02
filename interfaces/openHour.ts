@@ -4,4 +4,6 @@ export interface OpenHourInterface {
   id: string;
   shopId: string;
   day: DayType;
+  openTime: Date;
+  closeTime: Date;
 }

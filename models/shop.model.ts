@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const shopSchema = new mongoose.Schema(
   {
-    shop_name: {
+    name: {
       type: String,
       required: [true, 'A shop must have a name'], // built-in validators
       trim: true,

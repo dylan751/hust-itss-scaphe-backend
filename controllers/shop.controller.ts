@@ -5,7 +5,7 @@ import catchErrorAsync from '../utils/catchErrorAsync';
 
 export const getAllShops: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const allShops: any = [];
+    const allShops: any = Shop.find();
 
     res.status(200).json({
       status: 'success',

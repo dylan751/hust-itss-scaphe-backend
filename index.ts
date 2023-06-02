@@ -7,6 +7,8 @@ import shopRouter from './routes/shop.routes';
 import globalErrorHandler from './controllers/error.controller';
 
 dotenv.config();
+const app: Express = express();
+app.use(bodyParser.json());
 
 process.on('uncaughtException', (err: Error) => {
   console.error('UNHANDLER EXCEPTION! 💥 Shutting down...');
@@ -14,9 +16,19 @@ process.on('uncaughtException', (err: Error) => {
   process.exit(1);
 });
 
-const app: Express = express();
+// DATABASE
+const connect = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI as string);
+    console.log('Connected to MongoDB!');
+  } catch (error) {
+    throw error;
+  }
+};
 
-app.use(bodyParser.json());
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected!');
+});
 
 // ROUTE
 app.use('/api/v1/shops', shopRouter);
@@ -40,6 +52,7 @@ app.use(globalErrorHandler);
 
 const port = process.env.PORT || 5000;
 const server = app.listen(port, () => {
+  connect();
   console.log(`App running on port ${port}...`);
 });
 

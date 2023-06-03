@@ -4,11 +4,14 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import AppError from './utils/appError';
 import shopRouter from './routes/shop.routes';
+import ratingRouter from './routes/rating.routes';
 import globalErrorHandler from './controllers/error.controller';
+import cors from 'cors';
 
 dotenv.config();
 const app: Express = express();
 app.use(bodyParser.json());
+app.use(cors<Request>()); // Enable cors
 
 process.on('uncaughtException', (err: Error) => {
   console.error('UNHANDLER EXCEPTION! 💥 Shutting down...');
@@ -32,6 +35,7 @@ mongoose.connection.on('disconnected', () => {
 
 // ROUTE
 app.use('/api/v1/shops', shopRouter);
+app.use('/api/v1/ratings', ratingRouter);
 
 // Handling Unhandled Routes
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

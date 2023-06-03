@@ -8,7 +8,7 @@ router.route('/').get(shopController.getShops).post(shopController.createShop);
 
 router
   .route('/:id')
-  .get(shopController.getShop)
+  .get(shopController.getShopById)
   .patch(shopController.updateShop)
   .delete(shopController.deleteShop);
 

@@ -3,14 +3,31 @@ import Shop from '../models/shop.model';
 import AppError from '../utils/appError';
 import catchErrorAsync from '../utils/catchErrorAsync';
 import { ShopInterface } from '../interfaces/shop';
+import { calculateRating } from '../utils/calculateRating';
 
 export const getShops: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const shops: ShopInterface[] = await Shop.find();
+    const allShops: ShopInterface[] = await Shop.find();
+    let shops = allShops;
 
-    // TODO: Filter by city + district
+    // Filter by city + district
+    if (req.query.city) {
+      shops = shops.filter((shop) => shop.city === req.query.city);
+    }
+    if (req.query.district) {
+      shops = shops.filter((shop) => shop.district === req.query.district);
+    }
 
-    // TODO: Filter by rating
+    // Filter by rating (Get shops that have average rating >= req.query.rating)
+    if (req.query.star) {
+      for (let i = 0; i < shops.length; i++) {
+        const shopRating = await calculateRating(shops[i].id);
+        if (shopRating < parseInt(req.query.star as string)) {
+          // Remove that shop from the shops array
+          shops.splice(i, 1);
+        }
+      }
+    }
 
     res.status(200).json({
       status: 'success',
@@ -34,7 +51,7 @@ export const createShop: any = catchErrorAsync(
   },
 );
 
-export const getShop: any = catchErrorAsync(
+export const getShopById: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const shop: ShopInterface | null = await Shop.findById(req.params.id);
 
@@ -53,19 +70,19 @@ export const getShop: any = catchErrorAsync(
 
 export const updateShop: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const shop = await Shop.findByIdAndUpdate(req.params.id, req.body, {
+    const updatedShop = await Shop.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
 
-    if (!shop) {
+    if (!updatedShop) {
       return next(new AppError('No Shop found with that ID', 404));
     }
 
     res.status(200).json({
       status: 'success',
       data: {
-        shop,
+        shop: updatedShop,
       },
     });
   },

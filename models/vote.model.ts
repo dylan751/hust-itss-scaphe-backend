@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 const voteSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
+      type: Types.ObjectId,
       required: [true, 'A vote must belongs to a user'],
     },
     categoryId: {
-      type: String,
+      type: Types.ObjectId,
       required: [true, 'A vote must vote for a category'],
     },
   },

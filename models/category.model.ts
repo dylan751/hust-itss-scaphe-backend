@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 const categorySchema = new mongoose.Schema(
   {
     shopId: {
-      type: String,
+      type: Types.ObjectId,
       required: [true, 'A category must belongs to a coffee shop'],
     },
     category: {

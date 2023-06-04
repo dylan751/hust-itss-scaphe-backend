@@ -1,5 +1,5 @@
 export interface ImageInterface {
-  id: string;
+  _id: string;
   shopId: string;
   image: string;
 }

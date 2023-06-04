@@ -1,5 +1,5 @@
 export interface VoteInterface {
-  id: string;
+  _id: string;
   userId: string;
   categoryId: string;
 }

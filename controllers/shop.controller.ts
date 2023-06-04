@@ -21,6 +21,13 @@ export const getShops: any = catchErrorAsync(
     ]);
     let shops = allShops;
 
+    // Filter by searchTerm
+    if (req.query.searchTerm) {
+      shops = shops.filter((shop) =>
+        shop.name.includes(req.query.searchTerm as string),
+      );
+    }
+
     // Filter by city + district
     if (req.query.city) {
       shops = shops.filter((shop) => shop.city === req.query.city);
@@ -31,13 +38,16 @@ export const getShops: any = catchErrorAsync(
 
     // Filter by rating (Get shops that have average rating >= req.query.rating)
     if (req.query.star) {
+      let indexToRemove: number[] = [];
       for (let i = 0; i < shops.length; i++) {
-        const shopRating = await calculateRating(shops[i].id);
+        const shopRating = await calculateRating(shops[i]._id);
         if (shopRating < parseInt(req.query.star as string)) {
-          // Remove that shop from the shops array
-          shops.splice(i, 1);
+          // Marks the shops that should be removed's index into an array
+          indexToRemove.push(i);
         }
       }
+
+      shops = shops.filter((shop, index) => !indexToRemove.includes(index));
     }
 
     res.status(200).json({

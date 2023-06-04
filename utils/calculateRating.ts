@@ -5,17 +5,14 @@ import { DEFAULT_AVG_STAR } from '../constants/Star';
 export const calculateRating = async (shopId: string): Promise<number> => {
   const ratings: RatingInterface[] = await Rating.find({ shopId });
 
+  // If that shop doesn't have rating yet -> Return default value as 3 star
   if (ratings.length === 0) {
-    console.log(`Can't find the rating for ${shopId}`);
+    return DEFAULT_AVG_STAR;
   }
 
   let sumRating = 0;
   ratings.forEach((rating: RatingInterface) => (sumRating += rating.star));
   const avgRating: number = sumRating / ratings.length;
-
-  if (isNaN(avgRating)) {
-    return DEFAULT_AVG_STAR;
-  }
 
   return avgRating;
 };

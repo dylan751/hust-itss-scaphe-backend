@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 const ratingSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
+      type: Types.ObjectId,
       required: [true, 'A rating must belongs to a user'],
     },
     shopId: {
-      type: String,
+      type: Types.ObjectId,
       required: [true, 'A rating must belongs to a coffee shop'],
     },
     star: {

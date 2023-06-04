@@ -4,10 +4,21 @@ import AppError from '../utils/appError';
 import catchErrorAsync from '../utils/catchErrorAsync';
 import { ShopInterface } from '../interfaces/shop';
 import { calculateRating } from '../utils/calculateRating';
+import { Types } from 'mongoose';
 
 export const getShops: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const allShops: ShopInterface[] = await Shop.find();
+    // const allShops: ShopInterface[] = await Shop.find();
+    const allShops: ShopInterface[] = await Shop.aggregate([
+      {
+        $lookup: {
+          from: 'ratings',
+          localField: '_id',
+          foreignField: 'shopId',
+          as: 'ratings',
+        },
+      },
+    ]);
     let shops = allShops;
 
     // Filter by city + district
@@ -53,7 +64,20 @@ export const createShop: any = catchErrorAsync(
 
 export const getShopById: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const shop: ShopInterface | null = await Shop.findById(req.params.id);
+    // const shop: any = await Shop.findById(req.params.id);
+    const shop: ShopInterface[] = await Shop.aggregate([
+      {
+        $match: { _id: new Types.ObjectId(req.params.id) },
+      },
+      {
+        $lookup: {
+          from: 'ratings',
+          localField: '_id',
+          foreignField: 'shopId',
+          as: 'ratings',
+        },
+      },
+    ]);
 
     if (!shop) {
       return next(new AppError('No Shop found with that ID', 404));

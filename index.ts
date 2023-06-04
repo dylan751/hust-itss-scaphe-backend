@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import AppError from './utils/appError';
 import shopRouter from './routes/shop.routes';
 import ratingRouter from './routes/rating.routes';
+import userRouter from './routes/user.routes';
 import globalErrorHandler from './controllers/error.controller';
 import cors from 'cors';
 
@@ -36,6 +37,7 @@ mongoose.connection.on('disconnected', () => {
 // ROUTE
 app.use('/api/v1/shops', shopRouter);
 app.use('/api/v1/ratings', ratingRouter);
+app.use('/api/v1/users', userRouter);
 
 // Handling Unhandled Routes
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

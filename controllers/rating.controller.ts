@@ -7,12 +7,31 @@ import catchErrorAsync from '../utils/catchErrorAsync';
 import { RatingInterface } from '../interfaces/rating';
 import { UserInterface } from '../interfaces/user';
 import { ShopInterface } from '../interfaces/shop';
+import { Types } from 'mongoose';
 
 export const getRatings: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const ratings: RatingInterface[] = await Rating.find();
+    // const ratings: RatingInterface[] = await Rating.find();
 
-    // TODO: Get rating's user + shop info
+    // Get rating's user + shop info
+    const ratings: RatingInterface[] = await Rating.aggregate([
+      {
+        $lookup: {
+          from: 'shops',
+          localField: 'shopId',
+          foreignField: '_id',
+          as: 'shop',
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+    ]);
 
     res.status(200).json({
       status: 'success',
@@ -60,13 +79,26 @@ export const getRatingsByShopId: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { shopId } = req.params;
 
-    const ratings: RatingInterface[] = await Rating.find({ shopId });
+    // const ratings: RatingInterface[] = await Rating.find({ shopId });
+
+    // Get rating's user info
+    const ratings = await Rating.aggregate([
+      {
+        $match: { shopId: new Types.ObjectId(shopId) },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+    ]);
 
     if (ratings.length === 0) {
       return next(new AppError(`Can't find the ratings for ${shopId}`, 404));
     }
-
-    // TODO: Get rating's user info
 
     res.status(200).json({
       status: 'success',
@@ -77,18 +109,31 @@ export const getRatingsByShopId: any = catchErrorAsync(
   },
 );
 
-// Get all ratings of a coffee shop
+// Get all ratings of a user to coffee shops
 export const getRatingsByUserId: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.params;
 
-    const ratings: RatingInterface[] = await Rating.find({ userId });
+    // const ratings: RatingInterface[] = await Rating.find({ userId });
+
+    // Get rating's coffee shop info
+    const ratings = await Rating.aggregate([
+      {
+        $match: { userId: new Types.ObjectId(userId) },
+      },
+      {
+        $lookup: {
+          from: 'shops',
+          localField: 'shopId',
+          foreignField: '_id',
+          as: 'shop',
+        },
+      },
+    ]);
 
     if (ratings.length === 0) {
       return next(new AppError(`Can't find the ratings for ${userId}`, 404));
     }
-
-    // TODO: Get rating's coffee shop info
 
     res.status(200).json({
       status: 'success',

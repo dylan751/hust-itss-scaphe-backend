@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 const imageSchema = new mongoose.Schema(
   {
     shopId: {
-      type: String,
+      type: Types.ObjectId,
       required: [true, 'An image must belongs to a coffee shop'],
     },
     image: {

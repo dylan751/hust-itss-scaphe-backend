@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 const openHourSchema = new mongoose.Schema(
   {
     shopId: {
-      type: String,
+      type: Types.ObjectId,
       required: [true, 'An open hour must belongs to a coffee shop'],
     },
     day: {

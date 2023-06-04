@@ -7,7 +7,7 @@ const shopSchema = new mongoose.Schema(
       required: [true, 'A shop must have a name'], // built-in validators
       trim: true,
       maxlength: [40, 'A shop name must have less or equal 40 than characters'],
-      minlength: [5, 'A shop name must have more or equal 5 than characters'],
+      minlength: [3, 'A shop name must have more or equal 3 than characters'],
     },
     phone: {
       type: String,

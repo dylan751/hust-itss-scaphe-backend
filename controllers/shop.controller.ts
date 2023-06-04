@@ -21,10 +21,12 @@ export const getShops: any = catchErrorAsync(
     ]);
     let shops = allShops;
 
-    // Filter by searchTerm
+    // Filter by searchTerm (case insensitives)
     if (req.query.searchTerm) {
       shops = shops.filter((shop) =>
-        shop.name.includes(req.query.searchTerm as string),
+        shop.name
+          .toLowerCase()
+          .includes((req.query.searchTerm as string).toLowerCase()),
       );
     }
 

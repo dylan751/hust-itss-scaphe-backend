@@ -52,6 +52,17 @@ export const getShops: any = catchErrorAsync(
       shops = shops.filter((shop, index) => !indexToRemove.includes(index));
     }
 
+    // Sort by traffic status
+    if (req.query.sort === 'asc') {
+      shops = shops.sort((a: ShopInterface, b: ShopInterface) =>
+        a.traffic > b.traffic ? 1 : -1,
+      );
+    } else if (req.query.sort === 'desc') {
+      shops = shops.sort((a: ShopInterface, b: ShopInterface) =>
+        a.traffic <= b.traffic ? 1 : -1,
+      );
+    }
+
     res.status(200).json({
       status: 'success',
       result: shops.length,

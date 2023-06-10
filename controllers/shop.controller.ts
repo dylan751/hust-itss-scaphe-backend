@@ -4,6 +4,7 @@ import AppError from '../utils/appError';
 import catchErrorAsync from '../utils/catchErrorAsync';
 import { ShopInterface } from '../interfaces/shop';
 import { calculateRating } from '../utils/calculateRating';
+import { getShopCategories } from '../utils/getShopCategories';
 import { Types } from 'mongoose';
 
 export const getShops: any = catchErrorAsync(
@@ -16,6 +17,14 @@ export const getShops: any = catchErrorAsync(
           localField: '_id',
           foreignField: 'shopId',
           as: 'ratings',
+        },
+      },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: '_id',
+          foreignField: 'shopId',
+          as: 'categories',
         },
       },
     ]);
@@ -50,6 +59,25 @@ export const getShops: any = catchErrorAsync(
       }
 
       shops = shops.filter((shop, index) => !indexToRemove.includes(index));
+    }
+
+    // Filter by categories
+    if (req.query.categories) {
+      const queryCategoriesArr = (req.query.categories as string).split(',');
+      let indexToInclude: number[] = [];
+
+      for (let i = 0; i < shops.length; i++) {
+        const shopCategories: string[] = await getShopCategories(shops[i]._id);
+        if (
+          queryCategoriesArr.every((category: string) =>
+            shopCategories.includes(category),
+          )
+        ) {
+          indexToInclude.push(i);
+        }
+      }
+
+      shops = shops.filter((shop, index) => indexToInclude.includes(index));
     }
 
     // Sort by traffic status

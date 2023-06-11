@@ -128,6 +128,14 @@ export const getShopById: any = catchErrorAsync(
           as: 'ratings',
         },
       },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: '_id',
+          foreignField: 'shopId',
+          as: 'categories',
+        },
+      },
     ]);
 
     if (!shop) {

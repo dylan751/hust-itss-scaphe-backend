@@ -6,6 +6,8 @@ import { ShopInterface } from '../interfaces/shop';
 import { calculateRating } from '../utils/calculateRating';
 import { getShopCategories } from '../utils/getShopCategories';
 import { Types } from 'mongoose';
+import { format, isAfter, isBefore } from 'date-fns';
+import { checkShopOpenHour } from '../utils/checkShopOpenHour';
 
 export const getShops: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -25,6 +27,14 @@ export const getShops: any = catchErrorAsync(
           localField: '_id',
           foreignField: 'shopId',
           as: 'categories',
+        },
+      },
+      {
+        $lookup: {
+          from: 'openhours',
+          localField: '_id',
+          foreignField: 'shopId',
+          as: 'openHours',
         },
       },
     ]);
@@ -91,6 +101,26 @@ export const getShops: any = catchErrorAsync(
       );
     }
 
+    // Filter by open hour
+    if (req.query.dateTime) {
+      const [weekDay, date, time, type] = (req.query.dateTime as string).split(
+        ' ',
+      );
+
+      let indexToInclude: number[] = [];
+      for (let i = 0; i < shops.length; i++) {
+        const isValidShopOpenHour: boolean = checkShopOpenHour(
+          weekDay,
+          time,
+          shops[i].openHours,
+        );
+        if (isValidShopOpenHour) {
+          indexToInclude.push(i);
+        }
+      }
+      shops = shops.filter((shop, index) => indexToInclude.includes(index));
+    }
+
     res.status(200).json({
       status: 'success',
       result: shops.length,
@@ -104,6 +134,9 @@ export const getShops: any = catchErrorAsync(
 export const createShop: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const newShop = await Shop.create(req.body);
+
+    // TODO: Create openHour for shop from Mon -> Sun (8:00 -> 22:00) by default
+
     res.status(201).json({
       status: 'success',
       data: {
@@ -134,6 +167,14 @@ export const getShopById: any = catchErrorAsync(
           localField: '_id',
           foreignField: 'shopId',
           as: 'categories',
+        },
+      },
+      {
+        $lookup: {
+          from: 'openHours',
+          localField: '_id',
+          foreignField: 'shopId',
+          as: 'openHours',
         },
       },
     ]);

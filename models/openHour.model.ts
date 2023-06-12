@@ -9,9 +9,9 @@ const openHourSchema = new mongoose.Schema(
     day: {
       type: Number,
       enum: {
-        values: [2, 3, 4, 5, 6, 7, 8],
+        values: [1, 2, 3, 4, 5, 6, 7],
         message:
-          'Day is either: 2(Mon), 3(Tue), 4(Wed), 5(Thu), 6(Fri), 7(Sat), 8(Sun)',
+          'Day is either: 1(Sun), 2(Mon), 3(Tue), 4(Wed), 5(Thu), 6(Fri), 7(Sat)',
       },
     },
     openTime: {

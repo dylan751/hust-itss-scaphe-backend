@@ -7,6 +7,7 @@ import shopRouter from './routes/shop.routes';
 import ratingRouter from './routes/rating.routes';
 import userRouter from './routes/user.routes';
 import categoryRouter from './routes/category.routes';
+import openHourRouter from './routes/openHour.routes';
 import globalErrorHandler from './controllers/error.controller';
 import cors from 'cors';
 
@@ -40,6 +41,7 @@ app.use('/api/v1/shops', shopRouter);
 app.use('/api/v1/ratings', ratingRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/categories', categoryRouter);
+app.use('/api/v1/openHours', openHourRouter);
 
 // Handling Unhandled Routes
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

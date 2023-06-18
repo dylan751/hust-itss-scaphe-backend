@@ -6,4 +6,6 @@ export interface RatingInterface {
   shopId: string;
   star: StarType;
   content: string;
+  categoryIds: string[];
+  isTrafficOk: boolean;
 }

@@ -31,6 +31,14 @@ export const getRatings: any = catchErrorAsync(
           as: 'user',
         },
       },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'categoryIds',
+          foreignField: '_id',
+          as: 'categories',
+        },
+      },
     ]);
 
     res.status(200).json({
@@ -94,6 +102,14 @@ export const getRatingsByShopId: any = catchErrorAsync(
           as: 'user',
         },
       },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'categoryIds',
+          foreignField: '_id',
+          as: 'categories',
+        },
+      },
     ]);
 
     if (ratings.length === 0) {
@@ -127,6 +143,14 @@ export const getRatingsByUserId: any = catchErrorAsync(
           localField: 'shopId',
           foreignField: '_id',
           as: 'shop',
+        },
+      },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'categoryIds',
+          foreignField: '_id',
+          as: 'categories',
         },
       },
     ]);

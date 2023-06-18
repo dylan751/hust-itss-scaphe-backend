@@ -21,6 +21,19 @@ const ratingSchema = new mongoose.Schema(
       type: String,
       required: [false, 'The content of the review'],
     },
+    categoryIds: {
+      type: [Types.ObjectId],
+      required: [false, 'The array of category ids voted true by user'],
+      default: [],
+    },
+    isTrafficOk: {
+      type: Boolean,
+      required: [
+        false,
+        'The vote for if the shop traffic is currently correct or not',
+      ],
+      default: false,
+    },
   },
   {
     toJSON: { virtuals: true },

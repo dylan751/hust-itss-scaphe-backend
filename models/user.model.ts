@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema(
     },
     country: {
       type: String,
+      enum: {
+        values: ['ベトナム', '日本', '英国'],
+        message: 'nationalities is either: Vietnamese, Japanese, British',
+      },
       required: [true, 'An user must have a nation'],
     },
     avatar: {

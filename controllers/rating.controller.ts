@@ -39,6 +39,7 @@ export const getRatings: any = catchErrorAsync(
           as: 'categories',
         },
       },
+      { $sort: { createdAt: -1 } },
     ]);
 
     res.status(200).json({
@@ -114,6 +115,7 @@ export const getRatingsByShopId: any = catchErrorAsync(
           as: 'categories',
         },
       },
+      { $sort: { createdAt: -1 } },
     ]);
 
     if (ratings.length === 0) {
@@ -157,6 +159,7 @@ export const getRatingsByUserId: any = catchErrorAsync(
           as: 'categories',
         },
       },
+      { $sort: { createdAt: -1 } },
     ]);
 
     if (ratings.length === 0) {

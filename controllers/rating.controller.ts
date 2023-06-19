@@ -53,13 +53,17 @@ export const getRatings: any = catchErrorAsync(
 
 export const createRating: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const newRating = await Rating.create(req.body);
-    res.status(201).json({
-      status: 'success',
-      data: {
-        rating: newRating,
-      },
-    });
+    try {
+      const newRating = await Rating.create(req.body);
+      res.status(201).json({
+        status: 'success',
+        data: {
+          rating: newRating,
+        },
+      });
+    } catch (err) {
+      next(err);
+    }
   },
 );
 

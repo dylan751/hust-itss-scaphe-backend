@@ -37,6 +37,14 @@ export const getShops: any = catchErrorAsync(
           as: 'openHours',
         },
       },
+      {
+        $lookup: {
+          from: 'photos',
+          localField: '_id',
+          foreignField: 'shopId',
+          as: 'photos',
+        },
+      },
     ]);
     let shops = allShops;
 
@@ -175,6 +183,14 @@ export const getShopById: any = catchErrorAsync(
           localField: '_id',
           foreignField: 'shopId',
           as: 'openHours',
+        },
+      },
+      {
+        $lookup: {
+          from: 'photos',
+          localField: '_id',
+          foreignField: 'shopId',
+          as: 'photos',
         },
       },
     ]);

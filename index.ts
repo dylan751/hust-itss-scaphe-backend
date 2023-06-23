@@ -8,6 +8,7 @@ import ratingRouter from './routes/rating.routes';
 import userRouter from './routes/user.routes';
 import categoryRouter from './routes/category.routes';
 import openHourRouter from './routes/openHour.routes';
+import photoRouter from './routes/photo.routes';
 import globalErrorHandler from './controllers/error.controller';
 import cors from 'cors';
 
@@ -42,6 +43,7 @@ app.use('/api/v1/ratings', ratingRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/openHours', openHourRouter);
+app.use('/api/v1/photos', photoRouter);
 
 app.use((err: any, req: any, res: any, next: NextFunction) => {
   const errorStatus = err.status || 500;

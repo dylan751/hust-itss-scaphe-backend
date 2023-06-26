@@ -33,16 +33,16 @@ export const login: any = catchErrorAsync(
       );
     }
 
-    if (user.password === password) {
-      res.status(201).json({
-        status: 'success',
-        data: {
-          user: user,
-        },
-      });
+    if (user.password !== password) {
+      return next(createError(404, 'Invalid password!'));
     }
 
-    return next(createError(404, 'Invalid password!'));
+    res.status(201).json({
+      status: 'success',
+      data: {
+        user: user,
+      },
+    });
   },
 );
 

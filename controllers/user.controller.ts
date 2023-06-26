@@ -4,6 +4,7 @@ import AppError from '../utils/appError';
 import catchErrorAsync from '../utils/catchErrorAsync';
 import { ShopInterface } from '../interfaces/shop';
 import { UserInterface } from '../interfaces/user';
+import { createError } from '../utils/createError';
 
 export const getUsers: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -20,8 +21,38 @@ export const getUsers: any = catchErrorAsync(
   },
 );
 
+export const login: any = catchErrorAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return next(
+        createError(404, 'Wrong email! No user with that email exists!'),
+      );
+    }
+
+    if (user.password === password) {
+      res.status(201).json({
+        status: 'success',
+        data: {
+          user: user,
+        },
+      });
+    }
+
+    return next(createError(404, 'Invalid password!'));
+  },
+);
+
 export const createUser: any = catchErrorAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      return next(createError(404, 'Email already exists'));
+    }
+
     const newUser = await User.create(req.body);
     res.status(201).json({
       status: 'success',

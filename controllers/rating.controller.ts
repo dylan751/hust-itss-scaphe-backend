@@ -162,10 +162,6 @@ export const getRatingsByUserId: any = catchErrorAsync(
       { $sort: { createdAt: -1 } },
     ]);
 
-    if (ratings.length === 0) {
-      return next(new AppError(`Can't find the ratings for ${userId}`, 404));
-    }
-
     res.status(200).json({
       status: 'success',
       data: {

@@ -179,7 +179,7 @@ export const getShopById: any = catchErrorAsync(
       },
       {
         $lookup: {
-          from: 'openHours',
+          from: 'openhours',
           localField: '_id',
           foreignField: 'shopId',
           as: 'openHours',
